@@ -40,7 +40,7 @@ const SampleIntegration = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 bg-gradient-to-b from-[#0f0f0f] to-[#1b1b1b] text-white">
+    <div className="min-h-screen p-8 bg-gradient-to- from-[#0f0f0f] to-[#1b1b1b] text-white">
       <div className="max-w-2xl mx-auto space-y-10">
 
         <h1 className="text-4xl font-bold text-center">🎓 Certificate DApp</h1>

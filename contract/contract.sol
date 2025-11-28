@@ -1,49 +1,72 @@
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-// contract MultiWill {
-//     struct Will {
-//         address recipient;
-//         uint256 amount;
-//         bool claimed;
-//     }
+contract Certificate {
+    address public owner;
 
-//     mapping(address => Will[]) public wills; // Each owner can have multiple wills
+    struct CertData {
+        string studentName;
+        string courseName;
+        string grade;
+        uint256 timestamp;
+    }
 
-//     function createWill(address _recipient) public payable {
-//         require(_recipient != address(0), "Invalid recipient address");
-//         require(msg.value > 0, "Amount must be greater than zero");
+    mapping(uint256 => CertData) public certificates;
+    uint256 public certCount;
 
-//         wills[msg.sender].push(Will({
-//             recipient: _recipient,
-//             amount: msg.value,
-//             claimed: false
-//         }));
-//     }
+    event CertificateIssued(
+        uint256 certId,
+        string studentName,
+        string courseName,
+        string grade,
+        uint256 timestamp
+    );
 
-//     function claimWill(address _owner, uint256 _index) public {
-//         require(_index < wills[_owner].length, "Invalid will index");
+    constructor() {
+        owner = msg.sender;
+    }
 
-//         Will storage userWill = wills[_owner][_index];
-//         require(msg.sender == userWill.recipient, "Only recipient can claim");
-//         require(!userWill.claimed, "Already claimed");
-//         require(userWill.amount > 0, "No funds to claim");
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can issue certificates");
+        _;
+    }
 
-//         userWill.claimed = true;
-//         payable(userWill.recipient).transfer(userWill.amount);
-//     }
+    function issueCertificate(
+        string memory _studentName,
+        string memory _courseName,
+        string memory _grade
+    ) public onlyOwner returns (uint256) {
+        certCount++;
 
-//     function getMyWillsCount() public view returns (uint256) {
-//         return wills[msg.sender].length;
-//     }
+        certificates[certCount] = CertData({
+            studentName: _studentName,
+            courseName: _courseName,
+            grade: _grade,
+            timestamp: block.timestamp
+        });
 
-//     function getWill(address _owner, uint256 _index) public view returns (address recipient, uint256 amount, bool claimed) {
-//         require(_index < wills[_owner].length, "Invalid will index");
-//         Will memory userWill = wills[_owner][_index];
-//         return (userWill.recipient, userWill.amount, userWill.claimed);
-//     }
+        emit CertificateIssued(
+            certCount,
+            _studentName,
+            _courseName,
+            _grade,
+            block.timestamp
+        );
 
-//     function getContractBalance() public view returns (uint256) {
-//         return address(this).balance;
-//     }
-// }
+        return certCount;
+    }
+
+    function getCertificate(uint256 _certId)
+        public
+        view
+        returns (
+            string memory studentName,
+            string memory courseName,
+            string memory grade,
+            uint256 timestamp
+        )
+    {
+        CertData memory cert = certificates[_certId];
+        return (cert.studentName, cert.courseName, cert.grade, cert.timestamp);
+    }
+}

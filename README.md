@@ -3,6 +3,9 @@
 ## **Contract Address**
 `0x5449186768F79A36Cd8AB8B5D7030dbeaFe6512d`  
 Explorer: https://coston2-explorer.flare.network/address/0x5449186768F79A36Cd8AB8B5D7030dbeaFe6512d
+<img width="1917" height="986" alt="image" src="https://github.com/user-attachments/assets/cd3b29de-c29f-4796-9620-bce38ed2075e" />
+
+
 
 ---
 
@@ -77,4 +80,5 @@ Blockchain ensures **trustless verification**, removing fraud and increasing cre
 ## **Summary**
 This project delivers a powerful, secure, and fully decentralized solution for issuing and verifying educational certificates.  
 Built using **Next.js**, **wagmi**, **viem**, and **Flare testnet**, it demonstrates production-ready Web3 full-stack skills.
+
 
